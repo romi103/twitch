@@ -2,7 +2,7 @@ $(document).ready(function() {
 
     var streamLink = 'https://api.twitch.tv/kraken/streams/';
     var userLink = 'https://api.twitch.tv/kraken/users/';
-    var profileLink ='http://www.twitch.tv/';
+    var profileLink = 'http://www.twitch.tv/';
     var defaultLogoLink = "https://www.google.co.uk/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0CAcQjRxqFQoTCPPl1O6uk8kCFUa2Ggod1DUPvg&url=https%3A%2F%2Fpixabay.com%2Fen%2Fubuntu-logo-ubuntu-logo-linux-8647%2F&psig=AFQjCNFfmjBYjDcjgThGLxQ_jnbppGCT-A&ust=1447709099049019";
     var users = ["freecodecamp", "dotamajor", "terakilobyte", "habathcx", "RobotCaleb", "thomasballinger", "noobs2ninjas", "medrybw"]
     var active = [];
@@ -11,9 +11,9 @@ $(document).ready(function() {
     //display users info
     function displayUser(user) {
         if (user.game) {
-            $("#all, #online").append("<div class='channel'><a href='" + profileLink + user.name +"'><img class='image' src='" + user.logoLink + "'/><p>" + user.disname + "</p><p>" + user.game  + "<span> Live Stream <i class='fa fa-play-circle'></i></span></p></a></div>");
+            $("#all, #online").append("<div class='channel'><a href='" + profileLink + user.name + "'><img class='image' src='" + user.logoLink + "'/><p class='name'>" + user.disname + "</p><p>" + user.game + "<span> Live Stream <i class='fa fa-play-circle'></i></span></p></a></div>");
         } else {
-            $("#all, #offline").append("<div class='channel'><a href='" + profileLink + user.name +"'><img class='image' src='" + user.logoLink + "'/><p>" + user.disname + "</p></div>");
+            $("#all, #offline").append("<div class='channel'><a href='" + profileLink + user.name + "'><img class='image' src='" + user.logoLink + "'/><p class='name'>" + user.disname + "</p></div>");
         }
     }
 
@@ -35,7 +35,7 @@ $(document).ready(function() {
     //getting user info
     function getUserInfo(user) {
         $.getJSON(userLink + user + "").done(function(data) {
-               $("#spinner").hide(); 
+            $("#spinner").hide();
 
         }).done(function(data) {
 
@@ -57,4 +57,21 @@ $(document).ready(function() {
         });
     }
     users.forEach(getUserInfo);
+    //searching through the list of the user
+    $("#searchinput").keyup(function(event) {
+
+        var $value = $(event.target).val();
+        $value = $value.toLowerCase();
+        $(".channel").each(function() {
+            var $text = $(this).text();
+            $text = $text.toLowerCase();
+            if ($text.search($value) > -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+
+    });
+
 });
